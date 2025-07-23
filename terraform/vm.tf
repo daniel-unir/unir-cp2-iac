@@ -76,7 +76,7 @@ resource "azurerm_linux_virtual_machine" "vm-unir-casopractico2" {
   resource_group_name = azurerm_resource_group.rg-unir-casopractico2.name
   location            = azurerm_resource_group.rg-unir-casopractico2.location
   size                = "Standard_F2"
-  admin_username      = "unir-daniel"
+  admin_username      = "daniel-unir"
   network_interface_ids = [ azurerm_network_interface.nic-unir-casopractico2.id ]
 
   admin_ssh_key {
