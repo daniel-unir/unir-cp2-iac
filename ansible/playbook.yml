@@ -10,7 +10,7 @@
 
     - name: Descargar imagen de NGINX de Docker Hub
       containers.podman.podman_image:
-        name: nginx
+        name: docker.io/library/nginx
         tag: latest
 
     - name: Tagueamos la imagen
