@@ -1,0 +1,36 @@
+- name: Playbook del caso práctico 2 de UNIR
+  hosts: all
+  become: yes
+  tasks:
+    - name: Instalar podman
+      apt:
+        name: podman
+        state: present
+        update_cache: yes
+
+    - name: Descargar imagen de NGINX de Docker Hub
+      containers.podman.podman_image:
+        name: nginx
+        tag: latest
+
+    - name: Tagueamos la imagen
+      containers.podman.podman_tag:
+        image: nginx:latest
+        target_names:
+          - acrunircasopractico2.azurecr.io/nginx:latest
+
+    - name: Subimos la imagen al ACR
+      containers.podman.podman_image:
+        name: acrunircasopractico2.azurecr.io/nginx:latest
+        push: yes
+        username: acrunircasopractico2
+        password: "{{ lookup('env', 'ACR_PWD') }}"
+
+    - name: Levantamos el pod de NGINX escuchando en el puerto 80
+      containers.podman.podman_container:
+        name: nginxcp2daniel
+        image: acrunircasopractico2.azurecr.io/nginx:latest
+        state: started
+        pull: always
+        ports:
+          - "80:80"
