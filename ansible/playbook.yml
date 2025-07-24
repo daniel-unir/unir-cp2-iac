@@ -17,20 +17,26 @@
       containers.podman.podman_tag:
         image: nginx:latest
         target_names:
-          - acrunircasopractico2.azurecr.io/nginx:latest
+          - acrunircasopractico2.azurecr.io/nginx:casopractico2
 
     - name: Subimos la imagen al ACR
       containers.podman.podman_image:
-        name: acrunircasopractico2.azurecr.io/nginx:latest
+        name: acrunircasopractico2.azurecr.io/nginx:casopractico2
         push: yes
+        username: acrunircasopractico2
+        password: "{{ lookup('env', 'ACR_PWD') }}"
+
+    - name: Descargamos la imagen de nuestro ACR
+      containers.podman.podman_image:
+        name: acrunircasopractico2.azurecr.io/nginx:casopractico2
+        pull: true
         username: acrunircasopractico2
         password: "{{ lookup('env', 'ACR_PWD') }}"
 
     - name: Levantamos el pod de NGINX escuchando en el puerto 80
       containers.podman.podman_container:
         name: nginxcp2daniel
-        image: acrunircasopractico2.azurecr.io/nginx:latest
+        image: acrunircasopractico2.azurecr.io/nginx:casopractico2
         state: started
-        pull: always
         ports:
           - "80:80"
